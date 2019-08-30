@@ -8,20 +8,36 @@
 
 #apimode Xbees
 
-import serial
 
-try:
-    port = serial.Serial("COM25", baudrate=9600, timeout=3.0)
-except:
+
+import serial
+import time
+usbPort = "COM25"
+
+
+#recursive try except
+#https://stackoverflow.com/questions/39059566/python-try-except-else-with-recursion
+def connectXbeeSerial():
     try:
-        port = serial.Serial("COM25", baudrate=9600, timeout=3.0)
+        port = serial.Serial(usbPort, baudrate=9600, timeout=3.0)
+        print "Serial connected!"
+        return port
     except:
-        print "not able to connect"
-    
+        print "error in Serial"
+        time.sleep(1)
+        return connectXbeeSerial()
+        
+
+        
+
+port = connectXbeeSerial()
+print port
+
+## variables for function
 count=0
 hrx=0
 
-print port
+
 
 while True:
     rx=port.read()
@@ -29,44 +45,59 @@ while True:
     try:
         hrx =int(rx.encode('hex'), 16)
         count=count+1
-    except:
-        
+    except:        
         if rx!="":
             print rx
             print type(rx)
-        
-
-
+            
     
-
-    
-    # find start byte
-    if hrx == int(0x7e) :
+    if hrx == int(0x7e) :  # find start byte
         print "last frame "+str(count)+" length"
         count=0
         #print "new frame"
 
-        #read out unused bytes
-        for x in range(15):
+        
+        for x in range(15): # read past unused bytes
             count=count+1
             rx=port.read()
-            #print rx
             
-        rx=port.read()
+            
+        rx=port.read() # read 17th byte (payload 0)
         count=count+1
         #print hex(int(rx.encode('hex'), 16))
         print rx
-        if rx == '6':
-            print "dispenser 6"
-
-        if rx == '5':
-            print "dispenser 5"
-        if rx == '4':
-            print "dispenser 4"    
         
+        if rx == 'c':
+            print "dispenser "+rx
+        if rx == 'b':
+            print "dispenser "+rx
+        if rx == 'a':
+            print "dispenser "+rx    
+        if rx == '9':
+            print "dispenser "+rx
+        if rx == '8':
+            print "dispenser "+rx
+        if rx == '7':
+            print "dispenser "+rx            
+        if rx == '6':
+            print "dispenser "+rx
+        if rx == '5':
+            print "dispenser "+rx
+        if rx == '4':
+            print "dispenser "+rx    
+        if rx == '3':
+            print "dispenser "+rx
+        if rx == '2':
+            print "dispenser "+rx
+        if rx == '1':
+            print "dispenser "+rx
+
+            
         #rx=port.read()
         #print rx
         #print hex(int(rx.encode('hex'), 16))
+
+
 
 
 
