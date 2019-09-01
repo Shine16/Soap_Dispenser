@@ -1,8 +1,6 @@
-// serial high
+
 uint8_t shCmd[] = {'S','H'};
-// serial low
 uint8_t slCmd[] = {'S','L'};
-// association status
 uint8_t assocCmd[] = {'A','I'};
 AtCommandRequest atRequest = AtCommandRequest(shCmd);
 AtCommandResponse atResponse = AtCommandResponse();
@@ -49,7 +47,8 @@ void sendAtCommandNoPrint() {
                   if((atResponse.getValue()[0])==0){
                       digitalWrite(13,HIGH);
                       XbeeSleep();
-                      delay(5000);
+                      for(int i=0;i<60;i++)
+                        delay(60000);
                   }
                   else{
                       digitalWrite(13,LOW);
