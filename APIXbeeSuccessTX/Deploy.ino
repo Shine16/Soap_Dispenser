@@ -6,13 +6,14 @@ void codeTwo(){//first deploy
   scale.set_scale(calibration_factor); //Adjust to this calibration factor
   units = scale.get_units();
   if (units < 0)    units = 0.00;
+
+  //Serial.println(units); // delay(100);
   
-  if(units >2000){//weight sensed
- 
-      int sending=1;
+  //if(units >2000){//weight sensed
+  if(units >50){//weight sensed for 20kg load cell 
+       
       XbeeWake();
       sendTillResponse();
-
   
   }
   XbeeSleep();
@@ -24,13 +25,14 @@ void sendTillResponse(){
 
     int counter=0;
     int sendFlag=1;
-    int timeoutTime=500;
+    int timeoutTime=1000;
     
-    while(sendFlag==1&&counter<10){
-      delay(1000);
+    while(sendFlag==1&&counter<60){
+      delay(800);
       xbee.send(zbTx);
+      delay(200);
       
-      if (xbee.readPacket(timeoutTime)) {          
+      if (xbee.readPacket(1000)) {          
           if (xbee.getResponse().getApiId() == ZB_TX_STATUS_RESPONSE) {
             xbee.getResponse().getZBTxStatusResponse(txStatus);
             if (txStatus.getDeliveryStatus() == SUCCESS) {
@@ -40,14 +42,19 @@ void sendTillResponse(){
               break;
             }
           }
-      }     
-         
+      }
+      else{     
+         flashLed(statusLed, 3, 100);// flash TX indicator
+         delay(500);
+      }
       counter++;
-      timeoutTime+=500;
+      timeoutTime+=200;
+      flashLed(statusLed, 2, 100);// flash TX indicator
+
          
-      if(counter==10){
+      if(counter==60){
         if(DEBUG)
-            Serial.print("Fail to send"); 
+            flashLed(statusLed, 6, 300);// flash TX indicator
         XbeeSleep();
         break;
       }           

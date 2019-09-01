@@ -61,7 +61,8 @@ payload[1] = 'x';
   
   pinMode(statusLed, OUTPUT);
   pinMode(errorLed, OUTPUT);
-
+  digitalWrite(13,LOW);
+  
   pinMode(Xbee_sleep ,OUTPUT);
   
   Serial.begin(9600);
@@ -78,7 +79,8 @@ payload[1] = 'x';
 void loop() {   
   //testOne();//this will send 
   //testTwo();// will send up to 10x till receipt
-  codeTwo();
+  //codeTwo();
+  senseJoinedNetwork();
 }
 
 

@@ -1,3 +1,137 @@
+// serial high
+uint8_t shCmd[] = {'S','H'};
+// serial low
+uint8_t slCmd[] = {'S','L'};
+// association status
+uint8_t assocCmd[] = {'A','I'};
+AtCommandRequest atRequest = AtCommandRequest(shCmd);
+AtCommandResponse atResponse = AtCommandResponse();
+//AT command code
+
+
+void senseJoinedNetwork(){
+    XbeeWake();// just this, found to join network to be about 6s, modem orientation dependant
+    
+
+ 
+    /*xbee.readPacket();
+    if (xbee.getResponse().isAvailable()) {
+
+
+      //7E 00 02 8A 02 73
+      if(xbee.getResponse().getFrameDataLength()==6)
+        if((xbee.getResponse().getFrameData()[4], HEX)==0x02)      
+          flashLed(statusLed, 3, 100);// flash TX indicator
+ 
+    }*/
+
+
+      //check AI - if joined will show 0
+      //sendAtCommand();delay(1000);
+      sendAtCommandNoPrint();delay(1000);
+      
+}
+
+
+//without printout, only led 13, high if joined, low if not
+// to find AI - FF if not joined, 00 if joined
+// will detect if End device has joined network
+void sendAtCommandNoPrint() {
+  atRequest.setCommand(assocCmd);  
+  XbeeWake();
+  xbee.send(atRequest);
+
+  // wait up to 5 seconds for the status response
+  if (xbee.readPacket(500)) {    // got a response!
+     if (xbee.getResponse().getApiId() == AT_COMMAND_RESPONSE) {
+        xbee.getResponse().getAtCommandResponse(atResponse);
+        if (atResponse.isOk()) {
+                  if((atResponse.getValue()[0])==0){
+                      digitalWrite(13,HIGH);
+                      XbeeSleep();
+                      delay(5000);
+                  }
+                  else{
+                      digitalWrite(13,LOW);
+                       flashLed(statusLed, 2, 50);
+                  }
+                      
+  
+        } 
+    } 
+  }
+  flashLed(statusLed, 1, 50);
+ 
+}
+
+
+
+
+// to find AI - FF if not joined, 00 if joined
+// will detect if End device has joined network
+void sendAtCommand() {
+  atRequest.setCommand(assocCmd);  
+  XbeeWake();
+  // send the command
+  xbee.send(atRequest);
+
+  // wait up to 5 seconds for the status response
+  if (xbee.readPacket(5000)) {    // got a response!
+     if (xbee.getResponse().getApiId() == AT_COMMAND_RESPONSE) {
+        xbee.getResponse().getAtCommandResponse(atResponse);
+        XbeeSleep();delay(50);Serial.println();
+        Serial.println(atResponse.getValue()[0]);
+      if (atResponse.isOk()) {
+                if((atResponse.getValue()[0])==0)
+                    digitalWrite(13,HIGH);
+                    else
+                    digitalWrite(13,LOW);
+
+          /*
+            if (atResponse.getValueLength() > 0) {
+              //Serial.println(atResponse.getValueLength(), DEC);          
+              for (int i = 0; i < atResponse.getValueLength(); i++) {
+                Serial.print(atResponse.getValue()[i], HEX);
+                Serial.print(" ");
+                if((atResponse.getValue()[0], HEX)==0x00)
+                    digitalWrite(13,HIGH);
+                    else
+                    digitalWrite(13,LOW);
+              }
+    
+              Serial.println("");
+            }
+            */
+      } 
+      /*else {
+        Serial.print("Command return error code: ");
+        Serial.println(atResponse.getStatus(), HEX);
+      }*/
+    } 
+    
+    /*else {
+      //XbeeSleep();delay(50);Serial.println();
+      Serial.print("Expected AT response but got ");
+      Serial.print(xbee.getResponse().getApiId(), HEX);
+    }   */
+    
+  }
+  /*else { //read packet timeout fail
+    // at command failed
+    if (xbee.getResponse().isError()) {
+      //XbeeSleep();delay(50);Serial.println();
+      Serial.println("EC");  
+      //Serial.println(xbee.getResponse().getErrorCode());
+    } 
+    else {
+      //XbeeSleep();delay(50);Serial.println();
+      Serial.println("NR");  
+    }
+  }*/
+}
+
+
+
 
 void flashLed(int pin, int times, int wait) {
 
