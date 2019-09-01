@@ -25,8 +25,16 @@ This example is for Series 2 XBee
  Sends a ZB TX request with the value of analogRead(pin5) and checks the status response for success
 */
 
+uint8_t shCmd[] = {'S','H'};
+uint8_t slCmd[] = {'S','L'};
+uint8_t assocCmd[] = {'A','I'};
+AtCommandRequest atRequest = AtCommandRequest(shCmd);
+AtCommandResponse atResponse = AtCommandResponse();
+//AT code
 
-char dispNum='4';  //DISPENSER NUMBER
+
+
+char dispNum='6';  //DISPENSER NUMBER
 
 uint8_t payload[] = { 0 , 0 }; 
 bool DEBUG = true;
@@ -53,6 +61,7 @@ ZBTxStatusResponse txStatus = ZBTxStatusResponse();
 int statusLed = 13;
 int errorLed = 13;
 
+long startTime = 0;
 
 void setup() {
 payload[0] = dispNum;// DISPENSER NUMBER
@@ -70,17 +79,25 @@ payload[1] = 'x';
 
   scale.set_scale();
   scale.tare();  //Reset the scale to 0
+  scale.set_scale(calibration_factor); //Adjust to this calibration factor
   
   //long zero_factor = scale.read_average(); //Get a baseline reading - maynot be needed
   delay(100);
+  
+  startTime = millis();
 
+  //enable for CodeThree
+  while(detectNetwork());
+  
 }
 
 void loop() {   
   //testOne();//this will send 
   //testTwo();// will send up to 10x till receipt
   //codeTwo();
-  senseJoinedNetwork();
+  //senseJoinedNetwork();//test with 1 hr, SN register reading
+
+  codeThree();//firmware with AT SN register reading
 }
 
 

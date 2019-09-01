@@ -1,10 +1,5 @@
 
-uint8_t shCmd[] = {'S','H'};
-uint8_t slCmd[] = {'S','L'};
-uint8_t assocCmd[] = {'A','I'};
-AtCommandRequest atRequest = AtCommandRequest(shCmd);
-AtCommandResponse atResponse = AtCommandResponse();
-//AT command code
+ 
 
 
 void senseJoinedNetwork(){
