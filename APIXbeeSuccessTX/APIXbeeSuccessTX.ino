@@ -1,29 +1,19 @@
 
-
-//env variables
-//C:\Users\shien\AppData\Local\Programs\Python\Python37\Scripts\
-//C:\Users\shien\AppData\Local\Programs\Python\Python37\
-
-//C:\Python27
-//C:\Python27\Scripts
-
-
-//4 DT 
-//5 SCK
-
-//2 to DTR
-//2 to 2K pulldown resistor to GND
-
-
-
-
 #include <HX711.h>
 #include <XBee.h>
 #define Xbee_sleep 2
-/*
-This example is for Series 2 XBee
- Sends a ZB TX request with the value of analogRead(pin5) and checks the status response for success
-*/
+
+
+
+
+
+
+char dispNum='6';  //DISPENSER NUMBER (CHANGE THIS BASED ON DISPENSER)
+
+
+
+
+
 
 uint8_t shCmd[] = {'S','H'};
 uint8_t slCmd[] = {'S','L'};
@@ -33,8 +23,6 @@ AtCommandResponse atResponse = AtCommandResponse();
 //AT code
 
 
-
-char dispNum='6';  //DISPENSER NUMBER
 
 uint8_t payload[] = { 0 , 0 }; 
 bool DEBUG = true;
@@ -49,7 +37,12 @@ HX711 scale(4,5);
 // create the XBee object
 XBee xbee = XBee();
 
+//S2B
+//0013A200
+//40A81F89
+//XBeeAddress64 addr64 = XBeeAddress64(0x0013A200, 0x40A81F89);
 
+//S2C
 // SH + SL Address of receiving XBee
 //0013A200
 //4109CE94
@@ -99,6 +92,24 @@ void loop() {
 
   codeThree();//firmware with AT SN register reading
 }
+
+
+
+
+
+//env variables
+//C:\Users\shien\AppData\Local\Programs\Python\Python37\Scripts\
+//C:\Users\shien\AppData\Local\Programs\Python\Python37\
+
+//C:\Python27
+//C:\Python27\Scripts
+
+
+//4 DT 
+//5 SCK
+
+//2 to DTR
+//2 to 2K pulldown resistor to GND
 
 
 

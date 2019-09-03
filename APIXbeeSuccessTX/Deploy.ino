@@ -13,8 +13,8 @@ void codeThree(){// firmware with AT read of AI register
   //Read from load cell
   units = scale.get_units();
   if (units < 0)    units = 0.00;
-  //if(units >2000){//weight sensed
-  if(units >50){//weight sensed for 20kg load cell        
+  if(units >2000){//weight sensed for 5kg load cell
+  //if(units >50){//weight sensed for 20kg load cell        
       XbeeWake();
       sendTillResponse();  
       digitalWrite(13,HIGH);

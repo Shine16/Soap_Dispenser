@@ -12,8 +12,8 @@
 
 import serial
 import time
-usbPort = "COM25"
-
+#usbPort = "COM25"
+usbPort = "COM27"
 
 #recursive try except
 #https://stackoverflow.com/questions/39059566/python-try-except-else-with-recursion
