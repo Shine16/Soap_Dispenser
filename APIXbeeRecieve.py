@@ -1,12 +1,3 @@
-##/*pip install xbee
-##Collecting xbee
-##  Downloading https://files.pythonhosted.org/packages/0e/a3/464ff453523bd0a614df9f738afbdc02888bd59440ba35edcacb50805c85/XBee-2.3.2-py3-none-any.whl
-##Requirement already satisfied: pyserial in c:\users\shien\appdata\local\programs\python\python37\lib\site-packages (from xbee) (3.4)
-##Installing collected packages: xbee
-##Successfully installed xbee-2.3.2
-#https://python-xbee.readthedocs.io/en/latest/
-
-#apimode Xbees
 
 
 
@@ -15,8 +6,6 @@ import time
 #usbPort = "COM25"
 usbPort = "COM27"
 
-#recursive try except
-#https://stackoverflow.com/questions/39059566/python-try-except-else-with-recursion
 def connectXbeeSerial():
     try:
         port = serial.Serial(usbPort, baudrate=9600, timeout=3.0)
