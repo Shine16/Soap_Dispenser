@@ -9,11 +9,11 @@ except:
     print "not RPI"
     
 #####Configure USB port of windows/Rpi here
-#usbPort = "COM25"
-usbPort = "COM20"
+
+#usbPort = "COM20"
 
 #rpi
-#usbPort="/dev/ttyUSB0"
+usbPort="/dev/ttyUSB0"
 
 ###################
 
@@ -75,6 +75,7 @@ except:
     RPI=0
 
 while True:
+    rx='x'
     rx=port.read()
     
     try:
@@ -168,7 +169,7 @@ while True:
         f.close()
 
         
-    if RPI == 1:#enable only if RPI
+    if RPI == 2:#enable only if RPI
         try:
             if rx == '1':
                 t1 = time.time()
