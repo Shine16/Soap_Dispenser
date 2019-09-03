@@ -1,4 +1,10 @@
 
+bool debugLoadCell(){
+   units = scale.get_units();
+   Serial.println(units);
+   delay(1000);
+   return true;
+}
  
 
 

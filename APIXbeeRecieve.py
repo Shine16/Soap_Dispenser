@@ -4,7 +4,7 @@
 import serial
 import time
 #usbPort = "COM25"
-usbPort = "COM27"
+usbPort = "COM20"
 
 def connectXbeeSerial():
     try:

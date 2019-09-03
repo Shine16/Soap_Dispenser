@@ -8,11 +8,11 @@
 
 
 
-char dispNum='6';  //DISPENSER NUMBER (CHANGE THIS BASED ON DISPENSER)
+char dispNum='9';  //DISPENSER NUMBER (CHANGE THIS BASED ON DISPENSER)
 
 
 
-
+bool printLoadCell = false; // will print output of load cell in infinite loop
 
 
 uint8_t shCmd[] = {'S','H'};
@@ -78,7 +78,8 @@ payload[1] = 'x';
   delay(100);
   
   startTime = millis();
-
+  while(debugLoadCell()&&printLoadCell);
+  
   //enable for CodeThree
   while(detectNetwork());
   
